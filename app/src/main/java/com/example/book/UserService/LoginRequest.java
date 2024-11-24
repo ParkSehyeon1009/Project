@@ -1,23 +1,23 @@
 package com.example.book.UserService;
 
 public class LoginRequest {
-    private String email;
+    private String user_id;
     private String password;
 
     // 생성자
-    public LoginRequest(String email, String password) {
-        this.email = email;
+    public LoginRequest(String user_id, String password) {
+        this.user_id = user_id;
         this.password = password;
     }
 
     // Getter for ID
     public String getEmail() {
-        return email;
+        return user_id;
     }
 
     // Setter for ID
-    public void setID(String email) {
-        this.email = email;
+    public void setID(String user_id) {
+        this.user_id = user_id;
     }
 
     // Getter for password

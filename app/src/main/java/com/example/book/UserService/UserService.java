@@ -4,16 +4,18 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
 import retrofit2.http.GET;
+import retrofit2.http.Headers;
 import retrofit2.http.Query;
 import retrofit2.http.Path;
 import java.util.List;
 
 public interface UserService {
-    @POST("signup")
-    Call<SignupResponse> signUp(@Body User user);
-
+    @Headers({"Content-Type: application/json"})
     @POST("login")
     Call<LoginResponse> login(@Body LoginRequest loginRequest);
+
+    @POST("signup")
+    Call<SignupResponse> signUp(@Body User user);
 
     @POST("posts")
     Call<Void> createPost(@Body Post post);
