@@ -78,45 +78,40 @@ public class UserDetailActivity extends AppCompatActivity {
 
         // SharedPreferences에서 로그인한 사용자 ID 가져오기
         SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
-        int loggedInUserId = sharedPreferences.getInt("logged_in_user_id", -1);
-
-        // 저장된 쿠키 확인
         String sessionCookie = sharedPreferences.getString("session_cookie", null);
-        Log.d(TAG, "로그인한 사용자 ID: " + loggedInUserId);
         Log.d(TAG, "Stored Cookie: " + sessionCookie);
-
-        if (loggedInUserId == -1) {
-            Log.e(TAG, "로그인한 사용자 ID를 찾을 수 없습니다.");
-            Toast.makeText(this, "로그인한 사용자 정보를 가져올 수 없습니다.", Toast.LENGTH_SHORT).show();
-            return;
-        }
 
         Call<List<User>> call = userService.getUsers();
         call.enqueue(new Callback<List<User>>() {
             @Override
             public void onResponse(Call<List<User>> call, Response<List<User>> response) {
+                int loggedInUserId = sharedPreferences.getInt("logged_in_user_id", -1); // user id 불러오기
+                // 디버깅 코드 추가
+                Log.d(TAG, "Response Code: " + response.code());
+                try {
+                    if (response.body() != null) {
+                        Log.d(TAG, "Response Body: " + response.body().toString());
+                    } else {
+                        Log.e(TAG, "Response Body is null");
+                    }
+                    if (response.errorBody() != null) {
+                        Log.e(TAG, "Error Body: " + response.errorBody().string());
+                    }
+                } catch (IOException e) {
+                    Log.e(TAG, "Error reading error body", e);
+                }
+
+                // 기존 응답 처리 코드
                 if (response.isSuccessful() && response.body() != null) {
                     List<User> users = response.body();
                     Log.d(TAG, "Loaded users: " + users.toString());
-
-                    // 현재 사용자 정보 찾기
-                    for (User user : users) {
-                        if (user.getId() == loggedInUserId) {
-                            updateUI(user);
-                            return;
-                        }
+                    if (!users.isEmpty()) {
+                        User user = users.get(loggedInUserId); // 사용자 정보 불러오기
+                        updateUI(user);
                     }
-
-                    Log.e(TAG, "사용자 정보를 찾을 수 없습니다.");
-                    Toast.makeText(UserDetailActivity.this, "사용자 정보를 찾을 수 없습니다.", Toast.LENGTH_SHORT).show();
                 } else {
                     Log.e(TAG, "Failed to load users. Response code: " + response.code());
-                    try {
-                        String errorBody = response.errorBody().string();
-                        Log.e(TAG, "Error body: " + errorBody);
-                    } catch (IOException e) {
-                        Log.e(TAG, "Error while reading error body", e);
-                    }
+                    Toast.makeText(UserDetailActivity.this, "사용자 정보를 가져올 수 없습니다.", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -127,6 +122,8 @@ public class UserDetailActivity extends AppCompatActivity {
             }
         });
     }
+
+
 
     private void updateUI(User user) {
         // 사용자 정보를 텍스트 뷰에 설정

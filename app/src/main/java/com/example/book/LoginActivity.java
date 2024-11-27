@@ -56,6 +56,7 @@ public class LoginActivity extends AppCompatActivity {
                     if (response.isSuccessful()) {
                         // 서버에서 반환한 쿠키 확인
                         String cookie = response.headers().get("Set-Cookie");
+                        int userId = response.body().getUserId();
                         Log.d("LoginActivity", "Set-Cookie: " + cookie);
 
                         if (cookie != null && !cookie.isEmpty()) {
@@ -63,16 +64,22 @@ public class LoginActivity extends AppCompatActivity {
                             SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
                             SharedPreferences.Editor editor = sharedPreferences.edit();
                             editor.putString("session_cookie", cookie);
+                            editor.putInt("logged_in_user_id", userId);
                             editor.apply();
 
                             Log.d("LoginActivity", "Session Cookie save: " + cookie);
-
+                            Log.d("LoginActivity", "id: " + userId);
                             // MainActivity로 이동
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             startActivity(intent);
                             finish();
                         } else {
                             Log.e("LoginActivity", "Set-Cookie is null or empty.");
+                            SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.remove("session_cookie");
+                            editor.apply();
+                            Log.d("Logout", "Session cookie deleted");
                         }
                     } else {
                         Log.e("LoginActivity", "Login failed with code: " + response.code());
