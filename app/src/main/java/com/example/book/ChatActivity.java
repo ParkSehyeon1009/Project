@@ -1,5 +1,6 @@
 package com.example.book;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -26,6 +27,39 @@ public class ChatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+
+        Button chatListButton = findViewById(R.id.ChatList);
+        Button tradeListButton = findViewById(R.id.TradeList);
+        Button myInfoButton = findViewById(R.id.MyInfo);
+        Button HomeButton = findViewById(R.id.HomeButton);
+        Button PostListButton = findViewById(R.id.PostListButton);
+
+
+        // 채팅내역 버튼 클릭 리스너
+        chatListButton.setOnClickListener(v -> {
+            Intent intent = new Intent(ChatActivity.this, UserListActivity.class);
+            startActivity(intent);
+        });
+
+        // 거래내역 버튼 클릭 리스너
+        tradeListButton.setOnClickListener(v -> {
+            Intent intent = new Intent(ChatActivity.this, UserListActivity.class);
+            startActivity(intent);
+        });
+
+        // 내정보 버튼 클릭 리스너
+        myInfoButton.setOnClickListener(v -> {
+            Intent intent = new Intent(ChatActivity.this, UserDetailActivity.class);
+            startActivity(intent);
+        });
+        HomeButton.setOnClickListener(v -> {
+            Intent intent = new Intent(ChatActivity.this, MainActivity.class);
+            startActivity(intent);
+        });
+        PostListButton.setOnClickListener(v -> {
+            Intent intent = new Intent(ChatActivity.this, PostListActivity.class);
+             startActivity(intent);
+        });
 
         listViewChats = findViewById(R.id.listViewChats);
         edtMessage = findViewById(R.id.edtMessage);
@@ -55,7 +89,7 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void loadChats() {
-        RetrofitInstance.getUserService().getChats(userId, receiverId).enqueue(new Callback<List<Chat>>() {
+        RetrofitInstance.getUserService(this).getChats(userId, receiverId).enqueue(new Callback<List<Chat>>() {
             @Override
             public void onResponse(Call<List<Chat>> call, Response<List<Chat>> response) {
                 if (response.isSuccessful() && response.body() != null) {
@@ -75,7 +109,7 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void sendMessage(Chat chat) {
-        RetrofitInstance.getUserService().sendMessage(chat).enqueue(new Callback<Void>() {
+        RetrofitInstance.getUserService(this).sendMessage(chat).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {

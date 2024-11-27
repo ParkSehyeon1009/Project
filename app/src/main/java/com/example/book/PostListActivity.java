@@ -3,6 +3,7 @@ package com.example.book;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Toast;
@@ -26,6 +27,39 @@ public class PostListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_list);
+
+        Button chatListButton = findViewById(R.id.ChatList);
+        Button tradeListButton = findViewById(R.id.TradeList);
+        Button myInfoButton = findViewById(R.id.MyInfo);
+        Button HomeButton = findViewById(R.id.HomeButton);
+        Button PostListButton = findViewById(R.id.PostListButton);
+
+
+        // 채팅내역 버튼 클릭 리스너
+        chatListButton.setOnClickListener(v -> {
+            Intent intent = new Intent(PostListActivity.this, UserListActivity.class);
+            startActivity(intent);
+        });
+
+        // 거래내역 버튼 클릭 리스너
+        tradeListButton.setOnClickListener(v -> {
+            Intent intent = new Intent(PostListActivity.this, UserListActivity.class);
+            startActivity(intent);
+        });
+
+        // 내정보 버튼 클릭 리스너
+        myInfoButton.setOnClickListener(v -> {
+            Intent intent = new Intent(PostListActivity.this, UserDetailActivity.class);
+            startActivity(intent);
+        });
+        HomeButton.setOnClickListener(v -> {
+            Intent intent = new Intent(PostListActivity.this, MainActivity.class);
+            startActivity(intent);
+        });
+        PostListButton.setOnClickListener(v -> {
+            Intent intent = new Intent(PostListActivity.this, PostListActivity.class);
+            startActivity(intent);
+        });
 
         listViewPosts = findViewById(R.id.listViewPosts);
         searchView = findViewById(R.id.searchView);
@@ -55,7 +89,7 @@ public class PostListActivity extends AppCompatActivity {
     }
 
     private void loadPosts() {
-        RetrofitInstance.getUserService().getPosts().enqueue(new Callback<List<Post>>() {
+        RetrofitInstance.getUserService(this).getPosts().enqueue(new Callback<List<Post>>() {
             @Override
             public void onResponse(@NonNull Call<List<Post>> call, @NonNull Response<List<Post>> response) {
                 if (response.isSuccessful() && response.body() != null) {

@@ -31,7 +31,7 @@ public class PostDetailActivity extends AppCompatActivity {
     }
 
     private void loadPostDetails(int postId) {
-        RetrofitInstance.getUserService().getPostById(postId).enqueue(new Callback<Post>() {
+        RetrofitInstance.getUserService(this).getPostById(postId).enqueue(new Callback<Post>() {
             @Override
             public void onResponse(Call<Post> call, Response<Post> response) {
                 if (response.isSuccessful() && response.body() != null) {

@@ -1,33 +1,38 @@
 package com.example.book.UserService;
+import com.google.gson.annotations.SerializedName;
 
 public class User {
-    private int id; // 고유 사용자 ID (채팅에서 필요)
-    private String user_id; // 사용자 ID (회원가입에 사용)
-    private String username; // 사용자 이름
-    private int student_num; // 학번
-    private String email; // 이메일
-    private String password; // 비밀번호
+    private int id;
 
-    // 1. 회원가입용 생성자 (id를 제외)
-    public User(String user_id, String username, int student_num, String email, String password) {
-        this.user_id = user_id;
+    @SerializedName("user_id")
+    private String userId;
+
+    @SerializedName("username")
+    private String username;
+
+    @SerializedName("student_num")
+    private int studentNum;
+
+    @SerializedName("email")
+    private String email;
+
+    @SerializedName("password")
+    private String password;
+
+    // 기본 생성자
+    public User() {
+    }
+
+    // 회원가입용 생성자
+    public User(String userId, String username, int studentNum, String email, String password) {
+        this.userId = userId;
         this.username = username;
-        this.student_num = student_num;
+        this.studentNum = studentNum;
         this.email = email;
         this.password = password;
     }
 
-    // 2. 조회 및 채팅용 생성자 (id 포함)
-    public User(int id, String user_id, String username, int student_num, String email, String password) {
-        this.id = id;
-        this.user_id = user_id;
-        this.username = username;
-        this.student_num = student_num;
-        this.email = email;
-        this.password = password;
-    }
-
-    // Getter 및 Setter
+    // Getters and Setters
     public int getId() {
         return id;
     }
@@ -36,12 +41,12 @@ public class User {
         this.id = id;
     }
 
-    public String getUser_id() {
-        return user_id;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setUser_id(String user_id) {
-        this.user_id = user_id;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getUsername() {
@@ -52,12 +57,12 @@ public class User {
         this.username = username;
     }
 
-    public int getStudent_num() {
-        return student_num;
+    public int getStudentNum() {
+        return studentNum;
     }
 
-    public void setStudent_num(int student_num) {
-        this.student_num = student_num;
+    public void setStudentNum(int studentNum) {
+        this.studentNum = studentNum;
     }
 
     public String getEmail() {
@@ -76,3 +81,4 @@ public class User {
         this.password = password;
     }
 }
+

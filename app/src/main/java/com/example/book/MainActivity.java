@@ -10,7 +10,6 @@ import com.example.book.UserService.Post;
 import java.util.List;
 import com.example.book.UserService.Chat;
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
 import android.widget.Button;
 import android.content.Intent;
 import androidx.core.graphics.Insets;
@@ -30,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
         Button chatListButton = findViewById(R.id.ChatList);
         Button tradeListButton = findViewById(R.id.TradeList);
         Button myInfoButton = findViewById(R.id.MyInfo);
+        Button HomeButton = findViewById(R.id.HomeButton);
+        Button PostListButton = findViewById(R.id.PostListButton);
 
         recentPostsContainer = findViewById(R.id.recent_posts_container);
         recentMessagesContainer = findViewById(R.id.recent_messages_container);
@@ -53,7 +54,15 @@ public class MainActivity extends AppCompatActivity {
 
         // 내정보 버튼 클릭 리스너
         myInfoButton.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, UserListActivity.class);
+            Intent intent = new Intent(MainActivity.this, UserDetailActivity.class);
+            startActivity(intent);
+        });
+        HomeButton.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, MainActivity.class);
+            startActivity(intent);
+        });
+        PostListButton.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, PostListActivity.class);
             startActivity(intent);
         });
     }

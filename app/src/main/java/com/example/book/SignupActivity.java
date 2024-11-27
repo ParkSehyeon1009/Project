@@ -38,7 +38,7 @@ public class SignupActivity extends AppCompatActivity {
                     edtPassword.getText().toString()
             );
 
-            RetrofitInstance.getUserService().signUp(user).enqueue(new Callback<SignupResponse>() {
+            RetrofitInstance.getUserService(this).signUp(user).enqueue(new Callback<SignupResponse>() {
                 @Override
                 public void onResponse(Call<SignupResponse> call, Response<SignupResponse> response) {
                     if (response.isSuccessful()) {
@@ -46,6 +46,7 @@ public class SignupActivity extends AppCompatActivity {
                         Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
                         startActivity(intent);
                         finish();
+
                     } else {
                         try {
                             String errorBody = response.errorBody().string();
@@ -54,12 +55,18 @@ public class SignupActivity extends AppCompatActivity {
                             Log.e("SignupError", "Error parsing error body", e);
                         }
                         Toast.makeText(SignupActivity.this, "회원가입 실패", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                        finish();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<SignupResponse> call, Throwable t) {
                     Toast.makeText(SignupActivity.this, "오류: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                    finish();
                 }
             });
         });

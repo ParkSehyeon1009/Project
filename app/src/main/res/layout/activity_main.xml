@@ -111,7 +111,8 @@
             android:layout_weight="1"
             android:backgroundTint="@android:color/holo_blue_dark"
             android:text="채팅내역"
-            android:textColor="#FFFFFF" />
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
 
         <!-- 거래내역 버튼 -->
         <Button
@@ -121,7 +122,30 @@
             android:layout_weight="1"
             android:backgroundTint="@android:color/holo_blue_dark"
             android:text="거래내역"
-            android:textColor="#FFFFFF" />
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
+
+        <!-- 홈 버튼 -->
+        <Button
+            android:id="@+id/HomeButton"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:backgroundTint="@android:color/holo_blue_dark"
+            android:text="홈"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
+
+        <!-- 게시글 목록 버튼 -->
+        <Button
+            android:id="@+id/PostListButton"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:backgroundTint="@android:color/holo_blue_dark"
+            android:text="게시글 목록"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
 
         <!-- 내정보 버튼 -->
         <Button
@@ -131,7 +155,8 @@
             android:layout_weight="1"
             android:backgroundTint="@android:color/holo_blue_dark"
             android:text="내정보"
-            android:textColor="#FFFFFF" />
-    </LinearLayout>
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
 
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

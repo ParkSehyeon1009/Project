@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 import android.view.View; // View를 사용하기 위한 import
@@ -26,6 +27,39 @@ public class UserListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_list);
 
+        Button chatListButton = findViewById(R.id.ChatList);
+        Button tradeListButton = findViewById(R.id.TradeList);
+        Button myInfoButton = findViewById(R.id.MyInfo);
+        Button HomeButton = findViewById(R.id.HomeButton);
+        Button PostListButton = findViewById(R.id.PostListButton);
+
+
+        // 채팅내역 버튼 클릭 리스너
+        chatListButton.setOnClickListener(v -> {
+            Intent intent = new Intent(UserListActivity.this, UserListActivity.class);
+            startActivity(intent);
+        });
+
+        // 거래내역 버튼 클릭 리스너
+        tradeListButton.setOnClickListener(v -> {
+            Intent intent = new Intent(UserListActivity.this, UserListActivity.class);
+            startActivity(intent);
+        });
+
+        // 내정보 버튼 클릭 리스너
+        myInfoButton.setOnClickListener(v -> {
+            Intent intent = new Intent(UserListActivity.this, UserDetailActivity.class);
+            startActivity(intent);
+        });
+        HomeButton.setOnClickListener(v -> {
+            Intent intent = new Intent(UserListActivity.this, MainActivity.class);
+            startActivity(intent);
+        });
+        PostListButton.setOnClickListener(v -> {
+            Intent intent = new Intent(UserListActivity.this, PostListActivity.class);
+            startActivity(intent);
+        });
+
         listViewUsers = findViewById(R.id.listViewUsers);
 
         loadUsers();
@@ -42,7 +76,7 @@ public class UserListActivity extends AppCompatActivity {
     }
 
     private void loadUsers() {
-        RetrofitInstance.getUserService().getUsers().enqueue(new Callback<List<User>>() {
+        RetrofitInstance.getUserService(this).getUsers().enqueue(new Callback<List<User>>() {
             @Override
             public void onResponse(Call<List<User>> call, Response<List<User>> response) {
                 if (response.isSuccessful() && response.body() != null) {

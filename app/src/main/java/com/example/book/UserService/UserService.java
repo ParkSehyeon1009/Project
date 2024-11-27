@@ -5,8 +5,10 @@ import retrofit2.http.Body;
 import retrofit2.http.POST;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
+import retrofit2.http.Header;
 import retrofit2.http.Query;
 import retrofit2.http.Path;
+
 import java.util.List;
 
 public interface UserService {
@@ -41,4 +43,7 @@ public interface UserService {
 
     @GET("users/{id}") // 서버 API의 엔드포인트에 맞게 경로 수정
     Call<User> getUserById(@Path("id") int id);
+
+    @GET("/api/profile")
+    Call<User> getProfile(@Header("Cookie") String sessionCookie);
 }

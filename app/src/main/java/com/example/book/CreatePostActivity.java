@@ -1,5 +1,6 @@
 package com.example.book;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,6 +19,39 @@ public class CreatePostActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_post);
+
+        Button chatListButton = findViewById(R.id.ChatList);
+        Button tradeListButton = findViewById(R.id.TradeList);
+        Button myInfoButton = findViewById(R.id.MyInfo);
+        Button HomeButton = findViewById(R.id.HomeButton);
+        Button PostListButton = findViewById(R.id.PostListButton);
+
+
+        // 채팅내역 버튼 클릭 리스너
+        chatListButton.setOnClickListener(v -> {
+            Intent intent = new Intent(CreatePostActivity.this, UserListActivity.class);
+            startActivity(intent);
+        });
+
+        // 거래내역 버튼 클릭 리스너
+        tradeListButton.setOnClickListener(v -> {
+            Intent intent = new Intent(CreatePostActivity.this, UserListActivity.class);
+            startActivity(intent);
+        });
+
+        // 내정보 버튼 클릭 리스너
+        myInfoButton.setOnClickListener(v -> {
+            Intent intent = new Intent(CreatePostActivity.this, UserDetailActivity.class);
+            startActivity(intent);
+        });
+        HomeButton.setOnClickListener(v -> {
+            Intent intent = new Intent(CreatePostActivity.this, MainActivity.class);
+            startActivity(intent);
+        });
+        PostListButton.setOnClickListener(v -> {
+            Intent intent = new Intent(CreatePostActivity.this, PostListActivity.class);
+            startActivity(intent);
+        });
 
         edtTitle = findViewById(R.id.edtTitle);
         edtAuthor = findViewById(R.id.edtAuthor);
@@ -39,7 +73,7 @@ public class CreatePostActivity extends AppCompatActivity {
             Post post = new Post(title, content, author);
 
             // Retrofit을 이용해 서버에 게시글 등록 요청
-            RetrofitInstance.getUserService().createPost(post).enqueue(new Callback<Void>() {
+            RetrofitInstance.getUserService(this).createPost(post).enqueue(new Callback<Void>() {
                 @Override
                 public void onResponse(Call<Void> call, Response<Void> response) {
                     if (response.isSuccessful()) {

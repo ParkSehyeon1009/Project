@@ -7,15 +7,21 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.book.UserService.LoginRequest;
 import com.example.book.UserService.LoginResponse;
+import com.example.book.UserService.UserService;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
-    private EditText edtEmail, edtPassword;
+    private static final String TAG = "LoginActivity";
+
+    private EditText edtUserId, edtPassword;
     private Button btnLogin, btnSignUp;
 
     @Override
@@ -24,71 +30,60 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         // UI 요소 초기화
-        edtEmail = findViewById(R.id.edtID);
+        edtUserId = findViewById(R.id.edtUserId);
         edtPassword = findViewById(R.id.edtPassword);
         btnLogin = findViewById(R.id.btnLogin);
         btnSignUp = findViewById(R.id.btnSignUp);
 
         // 로그인 버튼 클릭 리스너
         btnLogin.setOnClickListener(v -> {
-            String email = edtEmail.getText().toString();
+            String userId = edtUserId.getText().toString();
             String password = edtPassword.getText().toString();
 
-            if (email.isEmpty() || password.isEmpty()) {
-                Toast.makeText(LoginActivity.this, "이메일과 비밀번호를 입력하세요", Toast.LENGTH_SHORT).show();
+            if (userId.isEmpty() || password.isEmpty()) {
+                Toast.makeText(LoginActivity.this, "아이디와 비밀번호를 입력하세요.", Toast.LENGTH_SHORT).show();
                 return;
             }
 
             // 로그인 요청 객체 생성
-            LoginRequest loginRequest = new LoginRequest(email, password);
+            LoginRequest loginRequest = new LoginRequest(userId, password);
 
-            // Retrofit을 사용해 로그인 요청
-            RetrofitInstance.getUserService().login(loginRequest).enqueue(new Callback<LoginResponse>() {
+            // Retrofit으로 로그인 요청
+            UserService userService = RetrofitInstance.getUserService(this);
+            userService.login(loginRequest).enqueue(new Callback<LoginResponse>() {
                 @Override
                 public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
-                    if (response.isSuccessful() && response.body() != null) {
-                        Log.d("LoginActivity", "Response Headers: " + response.headers().toString());
+                    if (response.isSuccessful()) {
+                        // 서버에서 반환한 쿠키 확인
+                        String cookie = response.headers().get("Set-Cookie");
+                        Log.d("LoginActivity", "Set-Cookie: " + cookie);
 
-                        String token = response.body().getToken();
-                        String sessionCookie = response.headers().get("Set-Cookie");
-
-                        Log.d("LoginActivity", "Set-Cookie: " + sessionCookie);
-
-                        if (sessionCookie != null) {
-                            // SharedPreferences에 세션 쿠키 저장
-                            SharedPreferences preferences = getSharedPreferences("MyApp", MODE_PRIVATE);
-                            SharedPreferences.Editor editor = preferences.edit();
-                            editor.putString("session_cookie", sessionCookie);
+                        if (cookie != null && !cookie.isEmpty()) {
+                            // SharedPreferences에 저장
+                            SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putString("session_cookie", cookie);
                             editor.apply();
 
-                            Log.d("LoginActivity", "Session Cookie 저장됨: " + sessionCookie);
-
-                            Toast.makeText(LoginActivity.this, "로그인 성공", Toast.LENGTH_SHORT).show();
+                            Log.d("LoginActivity", "Session Cookie save: " + cookie);
 
                             // MainActivity로 이동
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                            intent.putExtra("token", token); // 토큰 전달
                             startActivity(intent);
-                            finish(); // LoginActivity 종료
+                            finish();
                         } else {
-                            Log.e("LoginError", "Session cookie not found");
-                            Toast.makeText(LoginActivity.this, "로그인 실패: 세션 쿠키 없음", Toast.LENGTH_SHORT).show();
+                            Log.e("LoginActivity", "Set-Cookie is null or empty.");
                         }
                     } else {
-                        try {
-                            String errorBody = response.errorBody().string();
-                            Log.e("LoginError", "Error code: " + response.code() + ", Error body: " + errorBody);
-                        } catch (Exception e) {
-                            Log.e("LoginError", "Error while reading error body", e);
-                        }
-                        Toast.makeText(LoginActivity.this, "로그인 실패", Toast.LENGTH_SHORT).show();
+                        Log.e("LoginActivity", "Login failed with code: " + response.code());
                     }
                 }
 
+
                 @Override
                 public void onFailure(Call<LoginResponse> call, Throwable t) {
-                    Log.e("LoginError", "Request failed", t);
-                    Toast.makeText(LoginActivity.this, "오류: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                    Log.e(TAG, "로그인 요청 실패", t);
+                    Toast.makeText(LoginActivity.this, "네트워크 오류: " + t.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
         });
