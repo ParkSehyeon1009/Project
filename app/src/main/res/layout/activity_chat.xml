@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ChatActivity">
+
+    <!-- 채팅 메시지 목록과 메시지 입력 -->
+    <LinearLayout
+        android:id="@+id/chatContainer"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:padding="8dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/menuContainer"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <!-- 채팅 메시지 목록 -->
+        <ListView
+            android:id="@+id/listViewChats"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_weight="1" />
+
+        <!-- 메시지 입력 및 전송 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/edtMessage"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Type a message" />
+
+            <Button
+                android:id="@+id/btnSend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@android:color/holo_blue_dark"
+                android:text="Send" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- 하단 메뉴 버튼 -->
+    <LinearLayout
+        android:id="@+id/menuContainer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@android:color/holo_blue_dark"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <!-- 채팅내역 버튼 -->
+        <Button
+            android:id="@+id/ChatList"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:backgroundTint="@android:color/holo_blue_dark"
+            android:text="채팅내역"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
+
+        <!-- 거래내역 버튼 -->
+        <Button
+            android:id="@+id/TradeList"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:backgroundTint="@android:color/holo_blue_dark"
+            android:text="거래내역"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
+
+        <!-- 홈 버튼 -->
+        <Button
+            android:id="@+id/HomeButton"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:backgroundTint="@android:color/holo_blue_dark"
+            android:text="홈"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
+
+        <!-- 게시글 목록 버튼 -->
+        <Button
+            android:id="@+id/PostListButton"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:backgroundTint="@android:color/holo_blue_dark"
+            android:text="게시글 목록"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
+
+        <!-- 내정보 버튼 -->
+        <Button
+            android:id="@+id/MyInfo"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:backgroundTint="@android:color/holo_blue_dark"
+            android:text="내정보"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
